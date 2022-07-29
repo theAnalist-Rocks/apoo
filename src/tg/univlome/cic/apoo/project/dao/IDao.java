@@ -11,8 +11,9 @@ import java.util.List;
  * @author leBoulanger
  */
 public interface IDao<T> {
+    public <T> T ajouter(T object);
     public void supprimer(T object);
-    public T trouver(T object, Long id);
+//    public <T> T trouver(T object, Long id);
     public T modifier(T object, Long id);
     public List<T> lister();
     public List<T> lister(Long id);

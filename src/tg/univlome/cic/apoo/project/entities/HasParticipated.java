@@ -6,12 +6,17 @@ package tg.univlome.cic.apoo.project.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -23,19 +28,20 @@ public class HasParticipated implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-    @Column(name="id_eleve")
-    private int id_eleve;
-    @Column(name="id_eval")
-    private int id_eval;
-    @Column(name="date")
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST), targetEntity = Eleve.class)
+    private Eleve eleves;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST), targetEntity = Evaluation.class)
+    private Evaluation evaluations;
+    @Column(name="date", nullable = true)
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     public HasParticipated() {
     }
 
-    public HasParticipated(int id_eleve, int id_eval) {
-        this.id_eleve = id_eleve;
-        this.id_eval = id_eval;
+    public HasParticipated(Eleve eleves, Evaluation evaluations) {
+        this.eleves = eleves;
+        this.evaluations = evaluations;
     }
 
     public int getId() {
@@ -46,21 +52,23 @@ public class HasParticipated implements Serializable {
         this.id = id;
     }
 
-    public int getId_eleve() {
-        return id_eleve;
+    public Eleve getEleves() {
+        return eleves;
     }
 
-    public void setId_eleve(int id_eleve) {
-        this.id_eleve = id_eleve;
+    public void setEleves(Eleve eleves) {
+        this.eleves = eleves;
     }
 
-    public int getId_eval() {
-        return id_eval;
+    public Evaluation getEvaluations() {
+        return evaluations;
     }
 
-    public void setId_eval(int id_eval) {
-        this.id_eval = id_eval;
+    public void setEvaluations(Evaluation evaluations) {
+        this.evaluations = evaluations;
     }
+
+    
 
     public Date getDate() {
         return date;
@@ -72,10 +80,8 @@ public class HasParticipated implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + this.id;
-        hash = 17 * hash + this.id_eleve;
-        hash = 17 * hash + this.id_eval;
+        int hash = 5;
+        hash = 59 * hash + this.id;
         return hash;
     }
 
@@ -91,13 +97,7 @@ public class HasParticipated implements Serializable {
             return false;
         }
         final HasParticipated other = (HasParticipated) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        if (this.id_eleve != other.id_eleve) {
-            return false;
-        }
-        return this.id_eval == other.id_eval;
+        return this.id == other.id;
     }
     
     

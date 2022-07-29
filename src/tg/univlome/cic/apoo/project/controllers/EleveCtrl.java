@@ -7,9 +7,11 @@ package tg.univlome.cic.apoo.project.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import tg.univlome.cic.apoo.project.entities.Classe;
+import tg.univlome.cic.apoo.project.entities.Cours;
 import tg.univlome.cic.apoo.project.entities.Eleve;
 import tg.univlome.cic.apoo.project.entities.Evaluation;
 import tg.univlome.cic.apoo.project.entities.Notes;
+import tg.univlome.cic.apoo.project.entities.Periode;
 import tg.univlome.cic.apoo.project.entities.TypeEvaluation;
 import tg.univlome.cic.apoo.project.traitements.EntityCliCRUD;
 
@@ -24,12 +26,20 @@ public class EleveCtrl {
         return Eleve.getListe();
     }
     
+    public void ajouter(Eleve e) {
+        finder.ajouter(e, getListe());
+    }
+    
     public Eleve trouver(Eleve e) {
         return finder.trouver(e, getListe());
     }
     
     public Eleve trouver(int id) {
         return trouver(new Eleve(id));
+    }
+    
+    public void supprimer(Eleve e) {
+        finder.suppirmer(e, getListe());
     }
     
     /* Pour exécuter ces fonctions, on doit avoir un élève qui existe dékà et non un élève volatile*/
@@ -70,4 +80,12 @@ public class EleveCtrl {
     public int getId(Eleve e) {
         return e.getId();
     }
+    
+    public List<Cours> getListCours(Eleve e) {
+        return e.getClasse().getCours();
+    }
+    
+//    public float getMoyenneGenerale(Periode p, Eleve e) {
+//        return p.getMoyenne(getListCours(e), listTypes, e)
+//    }
 }

@@ -7,11 +7,15 @@ package tg.univlome.cic.apoo.project.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +23,7 @@ import javax.persistence.Table;
  * @author leBoulanger
  */
 @Entity
-@Table(name="eleve")
+@Table(name="eleves")
 public class Eleve implements Serializable {
     private static List<Eleve> liste = new ArrayList<>();
     @Column(name="nom")
@@ -30,12 +34,14 @@ public class Eleve implements Serializable {
     private int age;
     @Column(name="id_classe")
     private int id_classe;
+    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Classe classe;
     @Column(name="num_matricule")
     private int matricule;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
+    @OneToMany(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))
     private List<Notes> notes = new ArrayList<>();
     
     static {
@@ -53,17 +59,17 @@ public class Eleve implements Serializable {
         this.id = id;
     }
 
-    public Eleve(String nom, int age, int id_classe) {
-        this.nom = nom;
-        this.age = age;
-        this.id_classe = id_classe;
-    }
-
-    public Eleve(String nom, String prenom, int id) {
+    public Eleve(String nom, String prenom, int age) {
         this.nom = nom;
         this.prenom = prenom;
-        this.id = id;
+        this.age = age;
     }
+
+//    public Eleve(String nom, String prenom, int id) {
+//        this.nom = nom;
+//        this.prenom = prenom;
+//        this.id = id;
+//    }
     
     
     

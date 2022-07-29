@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import org.hibernate.SessionFactory;
-import tg.univlome.cic.apoo.project.entities.Classe;
 import tg.univlome.cic.apoo.project.utils.HibernateSessionFactory;
 
 /**
@@ -16,20 +15,20 @@ import tg.univlome.cic.apoo.project.utils.HibernateSessionFactory;
  * @author leBoulanger
  */
 public class DaoImpl<T> implements IDao {
-    private final EntityManager manager;
+    private final EntityManager mymanager;
     
 
     public DaoImpl() {
         SessionFactory sessionFactory = HibernateSessionFactory.getSessionFactory();
-        this.manager = sessionFactory.createEntityManager();
+        this.mymanager = sessionFactory.createEntityManager();
     }
 
     @Override
     public void supprimer(Object object) {
-        EntityTransaction transaction = manager.getTransaction();
+        EntityTransaction transaction = mymanager.getTransaction();
         try {
             transaction.begin();
-            manager.remove(object);
+            mymanager.remove(object);
             transaction.commit();
         }
         catch(Exception e) {
@@ -37,13 +36,12 @@ public class DaoImpl<T> implements IDao {
         }
     }
 
-    @Override
     public Object trouver(Object object, Long id) {
-        EntityTransaction transaction = manager.getTransaction();
+        EntityTransaction transaction = mymanager.getTransaction();
         Object found = null;
         try {
             transaction.begin();
-            found = manager.find(Object.class, id);
+            found = mymanager.find(Object.class, id);
         }catch(Exception ex) {
             transaction.rollback();
         }
@@ -52,11 +50,11 @@ public class DaoImpl<T> implements IDao {
 
     @Override
     public Object modifier(Object object, Long id) {
-        EntityTransaction transaction = manager.getTransaction();
+        EntityTransaction transaction = mymanager.getTransaction();
         Object found = null;
         try {
             transaction.begin();
-            found = manager.find(Object.class, id);
+            found = mymanager.find(Object.class, id);
             transaction.commit();
         }catch(Exception e) {
             transaction.rollback();
@@ -66,11 +64,11 @@ public class DaoImpl<T> implements IDao {
 
 //    @Override
 //    public List lister() {
-//        EntityTransaction transaction = manager.getTransaction();
+//        EntityTransaction transaction = mymanager.getTransaction();
 //        List<Object> listFound = new ArrayList<>();
 //        try {
 //            transaction.begin();
-//            listFound = manager.createQuery(sql).setParameter("", t)
+//            listFound = mymanager.createQuery(sql).setParameter("", t)
 //            transaction.commit();
 //        }
 //    }
@@ -83,6 +81,21 @@ public class DaoImpl<T> implements IDao {
     @Override
     public List lister() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object ajouter(Object object) {
+        EntityTransaction transaction = mymanager.getTransaction();
+        try {
+            transaction.begin();
+            mymanager.persist(object);
+            transaction.commit();
+        }
+        catch(Exception ex) {
+            transaction.rollback();
+            return null;
+        }
+        return object;
     }
     
     

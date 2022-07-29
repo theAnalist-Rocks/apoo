@@ -22,7 +22,7 @@ class AnnotatedClassCollection {
             Enseignement.class, Enseignant.class,
             Evaluation.class,  Matiere.class, Periode.class,
             TypeEvaluation.class, HasParticipated.class,
-            Niveau.class
+            Niveau.class, Notes.class
         };
 
         return Arrays.asList(classes);

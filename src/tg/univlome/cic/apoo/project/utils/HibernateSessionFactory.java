@@ -1,10 +1,7 @@
 package tg.univlome.cic.apoo.project.utils;
 
 
-import tg.univlome.cic.apoo.project.utils.AnnotatedClassCollection;
 import static java.util.Objects.isNull;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -43,6 +40,7 @@ public final class HibernateSessionFactory {
                 // The registry would be destroyed by the SessionFactory, but we 
                 // had trouble building the SessionFactory
                 // so destroy it manually.
+                e.printStackTrace();
                 StandardServiceRegistryBuilder.destroy(standardRegistry);
             }
         }

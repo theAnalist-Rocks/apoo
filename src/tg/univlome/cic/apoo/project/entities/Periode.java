@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,16 +61,29 @@ public class Periode implements Serializable {
     
     /* notes aux évaluations à la période courante pour un cours donné */
     public List<Notes> getNotes(Cours c, Eleve e) {
-        List<Notes> liste = new ArrayList<>();
+        
+        /**
+         *@c (Cours): le cours dont on veut récupérer les notes
+         *@e (Eleve): l'élève dont on cherche les notes
+         *@returns: la liste des notes pour l'élève e au cours c
+         */
+        List<Notes> listeNotes = new ArrayList<>();
         for (Notes note : new EleveCtrl().getNotes(e)) {
             if (note.getEvaluation().getCours().equals(c) && note.getEvaluation().getPeriode().equals(this)) {
-                liste.add(note);
+                listeNotes.add(note);
             }
         }
-        return liste;
+        return listeNotes;
     }
     
     public List<Notes> getNotesByType(TypeEvaluation t, Cours c, Eleve e) {
+        /**
+         @t (TypeEvaluation): c'est le type d'évaluation
+         @c (Cours): c'est le cours concerné par la recherche
+         @e (Eleve): c'est l'évlève sur qui est porté la recherche à la période courante
+         returns: une liste de notes pour la période courante concernant le cours c et et l'évaluation t
+         */
+        
         List<Notes> liste = new ArrayList<>();
         for (Notes note : getNotes(c, e)) {
             if(note.getEvaluation().getTypeEvaluation().equals(t)) {
@@ -82,6 +94,12 @@ public class Periode implements Serializable {
     }
     
     public float getMoyenneType(TypeEvaluation t, Eleve e, Cours c) {
+        /**
+         @c (Cours): le cours dont on veut la moyenne pour un certain type d'évaluation
+         @t (TypeEvaluation): c'est le type de l'évaluation dont on veut la moyenne
+         @e (Eleve): c'est l'élève concerné par le calcul de la moyenne
+         returns: la moyenne pour un type donné d'évaluation à la période courante
+         */
         float moyenne = 0;
         int count = 0;
         List<Notes> liste = getNotesByType(t, c, e);
@@ -93,6 +111,12 @@ public class Periode implements Serializable {
     }
     
     public float getMoyenneCours(Cours c, List<TypeEvaluation> list, Eleve e) {
+        /**@params: 
+        @cours c: le cours dont on cherche à calculer la moyenne à la période donnée
+        @list : La liste des types d'évaluations concernés par le calcul de la moyenne
+        @e: l'élève dont on veut la moyenne pour un cours donné
+        returns: la moyenne totale (pour tous les cours et tous les types d'évaluation)
+        */
         float moyenne = 0;
         /* vérifier le poids ici */
         for (TypeEvaluation typeEvaluation : list) {
@@ -102,6 +126,12 @@ public class Periode implements Serializable {
     }
     
     public float getMoyenne(List<Cours> listCours, List<TypeEvaluation> listTypes, Eleve e) {
+        /**@params: 
+        @listCours: La liste des cours suivis par l'élève passé en paramètre
+        @listeTypes: La liste des types d'evaluations (INTERROGATION, DEVOIR ET EXAMEN)
+        @e: L'elève dont on cherche la moyenne
+        returns: la moyenne totale (pour tous les cours et tous les types d'évaluation)
+        */
         float moyenne = 0;
         int count = 0;
         for (Cours cours : listCours) {

@@ -5,51 +5,52 @@
 package tg.univlome.cic.apoo.project.entities;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
  *
  * @author leBoulanger
  */
-@Entity
+@Entity(name = "Notes")
 @Table(name="notes")
 public class Notes implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    @Column(name="id_eleve")
-    private int id_eleve;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))
     private Eleve eleve;
-    @Column(name="id_evaluation")
-    private int id_evaluation;
-    private Evaluation evaluation;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// targetEntity = Evaluation.class)
+    private Evaluation evaluations;
     @Column(name="value")
     private float value;
-    @Column(name="corr_par_id")
-    private Enseignant enseignant;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// mappedBy = "notes", targetEntity = Enseignant.class)
+    private Enseignant enseignants;
 
     public Notes() {
     }
 
-    public Notes(int id_eleve, int id_evaluation, int value) {
-        this.id_eleve = id_eleve;
-        this.id_evaluation = id_evaluation;
+    public Notes(Eleve eleve, Evaluation evaluations, float value, Enseignant enseignants) {
+        this.eleve = eleve;
+        this.evaluations = evaluations;
         this.value = value;
+        this.enseignants = enseignants;
     }
 
-    public Notes(Long id, Eleve eleve, Evaluation evaluation, float value, Enseignant enseignant) {
-        this.id = id;
+    public Notes(Eleve eleve, Evaluation evaluations, float value) {
         this.eleve = eleve;
-        this.evaluation = evaluation;
+        this.evaluations = evaluations;
         this.value = value;
-        this.enseignant = enseignant;
     }
-    
 
     public Long getId() {
         return id;
@@ -59,24 +60,28 @@ public class Notes implements Serializable {
         this.id = id;
     }
 
-    public int getId_eleve() {
-        return id_eleve;
+    public Evaluation getEvaluations() {
+        return evaluations;
     }
 
-    public void setId_eleve(int id_eleve) {
-        this.id_eleve = id_eleve;
-    }
-
-    public int getId_evaluation() {
-        return id_evaluation;
-    }
-
-    public void setId_evaluation(int id_evaluation) {
-        this.id_evaluation = id_evaluation;
+    public void setEvaluations(Evaluation evaluations) {
+        this.evaluations = evaluations;
     }
 
     public float getValue() {
-        return value * evaluation.getCours().getEnseignement().getCoefficient();
+        return value;
+    }
+
+    public void setValue(float value) {
+        this.value = value;
+    }
+
+    public Enseignant getEnseignants() {
+        return enseignants;
+    }
+
+    public void setEnseignants(Enseignant enseignants) {
+        this.enseignants = enseignants;
     }
 
     public void setValue(int value) {
@@ -92,19 +97,19 @@ public class Notes implements Serializable {
     }
 
     public Evaluation getEvaluation() {
-        return evaluation;
+        return evaluations;
     }
 
     public void setEvaluation(Evaluation evaluation) {
-        this.evaluation = evaluation;
+        this.evaluations = evaluation;
     }
 
     public Enseignant getEnseignant() {
-        return enseignant;
+        return enseignants;
     }
 
     public void setEnseignant(Enseignant enseignant) {
-        this.enseignant = enseignant;
+        this.enseignants = enseignant;
     }
 
     @Override

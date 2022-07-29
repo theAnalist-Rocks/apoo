@@ -7,11 +7,14 @@ package tg.univlome.cic.apoo.project.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.traitements.EntityCliCRUD;
 
@@ -27,12 +30,15 @@ public class Cours implements Serializable {
     
     @Column(name="id_enseignant")
     private int id_enseignant;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// targetEntity = Enseignant.class)
     private Enseignant enseignant;
     @Column(name="id_enseignement")
     private int id_enseignement;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))//targetEntity = Enseignement.class)
     private Enseignement enseignement;
     @Column(name="id_classe")
     private int id_classe;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// targetEntity = Classe.class)
     private Classe classe;
     @Column(name="code_cours")
     private int codeCours;

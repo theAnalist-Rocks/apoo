@@ -7,11 +7,15 @@ package tg.univlome.cic.apoo.project.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,9 +23,10 @@ import javax.persistence.Table;
  * @author leBoulanger
  */
 @Entity
-@Table(name="enseignant")
+@Table(name="enseignants")
 public class Enseignant implements Serializable {
     private static List<Enseignant> liste = new ArrayList<>();
+    
     @Column(name="nom")
     private String nom;
     @Column(name="prenom")
@@ -33,7 +38,10 @@ public class Enseignant implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
+    @OneToMany(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// mappedBy = "enseignants", targetEntity = Notes.class)
     private List<Notes> notes = new ArrayList<>();
+    @OneToMany(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// mappedBy = "cours", targetEntity = Cours.class)
+    private List<Cours> cours = new ArrayList<>();
     
     static {
         liste.add(new Enseignant("Yovo", "Amevi", 0));
@@ -55,10 +63,10 @@ public class Enseignant implements Serializable {
         this.id = id;
     }
 
-    public Enseignant(String nom, String prenom, int id) {
+    public Enseignant(String nom, String prenom, int age) {
         this.nom = nom;
         this.prenom = prenom;
-        this.id = id;
+        this.age = age;
     }
     
     
@@ -67,8 +75,8 @@ public class Enseignant implements Serializable {
         notes.add(n);
     }
     
-    public void ajouterNote(Long id, float value, Evaluation eval, Eleve e) {
-        ajouterNote(new Notes(id, e, eval, value, this));
+    public void ajouterNote(float value, Evaluation eval, Eleve e) {
+        ajouterNote(new Notes(e, eval, value));
     }
     
     public void enleverNote(Notes n) {
