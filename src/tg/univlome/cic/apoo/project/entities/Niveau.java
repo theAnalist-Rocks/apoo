@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.dao.Manager;
 
 /**
  *
@@ -34,7 +35,7 @@ public class Niveau implements Serializable {
     private int code;
     @Column(name="description")
     private String description;
-    private static IDao manager = new DaoImpl();
+    private static IDao manager = Manager.getManager();
     
     static {
         Niveau lvl2 = new Niveau("Cinquième", 5, "Niveau Cinquième");
