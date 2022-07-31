@@ -7,32 +7,26 @@ package tg.univlome.cic.apoo.project.service;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.hibernate.SessionFactory;
-import tg.univlome.cic.apoo.project.dao.DaoImpl;
-import tg.univlome.cic.apoo.project.dao.IDao;
-import tg.univlome.cic.apoo.project.entities.Classe;
 import tg.univlome.cic.apoo.project.utils.HibernateSessionFactory;
+import tg.univlome.cic.apoo.project.entities.Cours;
 
 /**
  *
  * @author leBoulanger
  */
-public class ClasseService {
+public class CoursService {
     private static EntityManager manager;
     
-    public ClasseService() {
+    public CoursService() {
         SessionFactory sessionFactory = HibernateSessionFactory.getSessionFactory();
         this.manager = sessionFactory.createEntityManager();
     }
     
-    public List<Classe> getClasses() {
-        List<Classe> liste = manager.createQuery("select c from Classe c").getResultList();
-        return liste;
+    public List<Cours> getCourses() {
+        return manager.createQuery("select c from Cours c", Cours.class).getResultList();
     }
     
-    public static Classe getClasse(int id) {
-        List<Classe> resultats = manager.createQuery("select c from Classe c where c.id = :id", Classe.class)
-                .setParameter("id", id)
-                .getResultList();
-        return resultats.get(0);
+    public Cours getCours(int id) {
+        return manager.createQuery("select c from Cours c where c.id = :id", Cours.class).getSingleResult();
     }
 }

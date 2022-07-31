@@ -4,6 +4,7 @@
  */
 package tg.univlome.cic.apoo.project.dao;
 
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -49,12 +50,12 @@ public class DaoImpl<T> implements IDao {
     }
 
     @Override
-    public Object modifier(Object object, Long id) {
+    public Object modifier(Object object) {
         EntityTransaction transaction = mymanager.getTransaction();
         Object found = null;
         try {
             transaction.begin();
-            found = mymanager.find(Object.class, id);
+            found = mymanager.merge(object);
             transaction.commit();
         }catch(Exception e) {
             transaction.rollback();
@@ -92,10 +93,24 @@ public class DaoImpl<T> implements IDao {
             transaction.commit();
         }
         catch(Exception ex) {
-            transaction.rollback();
+            ex.printStackTrace();
             return null;
         }
         return object;
+    }
+
+    @Override
+    public void ajouter(Collection object) {
+        for (Object object1 : object) {
+            ajouter(object1);
+        }
+    }
+
+    @Override
+    public void modifier(Collection object) {
+        for (Object object1 : object) {
+            modifier(object1);
+        }
     }
     
     

@@ -7,32 +7,26 @@ package tg.univlome.cic.apoo.project.service;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.hibernate.SessionFactory;
-import tg.univlome.cic.apoo.project.dao.DaoImpl;
-import tg.univlome.cic.apoo.project.dao.IDao;
-import tg.univlome.cic.apoo.project.entities.Classe;
+import tg.univlome.cic.apoo.project.entities.Periode;
 import tg.univlome.cic.apoo.project.utils.HibernateSessionFactory;
 
 /**
  *
  * @author leBoulanger
  */
-public class ClasseService {
+public class PeriodeService {
     private static EntityManager manager;
     
-    public ClasseService() {
+    public PeriodeService() {
         SessionFactory sessionFactory = HibernateSessionFactory.getSessionFactory();
         this.manager = sessionFactory.createEntityManager();
     }
     
-    public List<Classe> getClasses() {
-        List<Classe> liste = manager.createQuery("select c from Classe c").getResultList();
-        return liste;
+    public List<Periode> getPeriodes() {
+        return manager.createQuery("select p from Periode p", Periode.class).getResultList();
     }
     
-    public static Classe getClasse(int id) {
-        List<Classe> resultats = manager.createQuery("select c from Classe c where c.id = :id", Classe.class)
-                .setParameter("id", id)
-                .getResultList();
-        return resultats.get(0);
+    public Periode getPeriode(int id) {
+        return manager.createQuery("select p from Periode p where p.id = :id", Periode.class).setParameter("id", id).getSingleResult();
     }
 }

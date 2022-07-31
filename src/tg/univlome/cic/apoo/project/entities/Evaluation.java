@@ -55,6 +55,13 @@ public class Evaluation implements Serializable {
         this.id_periode = id_periode;
     }
 
+    public Evaluation(Cours cours, Periode periode, TypeEvaluation typeEvaluation, float poids) {
+        this.cours = cours;
+        this.periode = periode;
+        this.typeEvaluation = typeEvaluation;
+        this.poids = poids;
+    }
+
     public int getId_cours() {
         return id_cours;
     }

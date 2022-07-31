@@ -5,6 +5,8 @@
 package tg.univlome.cic.apoo.project.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,6 +37,7 @@ public class Notes implements Serializable {
     private float value;
     @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// mappedBy = "notes", targetEntity = Enseignant.class)
     private Enseignant enseignants;
+    private static List<Notes> listeNotes = new ArrayList<>();
 
     public Notes() {
     }
@@ -110,6 +113,14 @@ public class Notes implements Serializable {
 
     public void setEnseignant(Enseignant enseignant) {
         this.enseignants = enseignant;
+    }
+
+    public List<Notes> getListeNotes() {
+        return listeNotes;
+    }
+
+    public void setListeNotes(List<Notes> listeNotes) {
+        this.listeNotes = listeNotes;
     }
 
     @Override

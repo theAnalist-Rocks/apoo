@@ -5,6 +5,7 @@
 package tg.univlome.cic.apoo.project.entities;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.controllers.EleveCtrl;
 import tg.univlome.cic.apoo.project.controllers.EvaluationCtrl;
+import tg.univlome.cic.apoo.project.dao.DaoImpl;
+import tg.univlome.cic.apoo.project.dao.IDao;
 
 /**
  *
@@ -25,6 +28,7 @@ import tg.univlome.cic.apoo.project.controllers.EvaluationCtrl;
 @Table(name="periode")
 public class Periode implements Serializable {
     private static List<Periode> liste = new ArrayList<>();
+    private static IDao manager = new DaoImpl();
     @Column(name="nom_periode")
     private String nom_periode;
     @Column(name="date_debut")
@@ -36,9 +40,17 @@ public class Periode implements Serializable {
     private int id;
     
     static {
-        liste.add(new Periode("Trimestre 1", 0));
-        liste.add(new Periode("Trimestre 2", 1));
-        liste.add(new Periode("Trimestre 3", 2));
+        Periode p1 = new Periode("Trimestre 1");
+        Periode p2 = new Periode("Trimestre 2");
+        Periode p3 = new Periode("Trimestre 3");
+        
+        liste.add(p1);
+        liste.add(p2);
+        liste.add(p3);
+        
+        manager.ajouter(p1);
+        manager.ajouter(p2);
+        manager.ajouter(p3);
     }
 
     public Periode() {

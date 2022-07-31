@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import tg.univlome.cic.apoo.project.dao.DaoImpl;
+import tg.univlome.cic.apoo.project.dao.IDao;
 import tg.univlome.cic.apoo.project.traitements.EntityCliCRUD;
 
 /**
@@ -27,6 +29,7 @@ import tg.univlome.cic.apoo.project.traitements.EntityCliCRUD;
 public class Cours implements Serializable {
     private static List<Cours> liste = new ArrayList<>();
     private static EntityCliCRUD finder = new EntityCliCRUD();
+    private static IDao manager = new DaoImpl();
     
     @Column(name="id_enseignant")
     private int id_enseignant;
@@ -45,14 +48,23 @@ public class Cours implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
+    
+    static {
+        Cours c = new Cours(10, 0, 4, 0);
+        liste.add(c);
+        manager.ajouter(c);
+    }
 
     public Cours() {
     }
 
     public Cours(int id_enseignant, int id_enseignement, int id_classe, int codeCours) {
         this.id_enseignant = id_enseignant;
+        this.setEnseignant(id_enseignant);
         this.id_enseignement = id_enseignement;
+        this.setEnseignement(id_enseignement);
         this.id_classe = id_classe;
+        this.setClasse(id_classe);
         this.codeCours = codeCours;
     }
 
@@ -107,6 +119,10 @@ public class Cours implements Serializable {
     public Enseignant getEnseignant() {
         return enseignant;
     }
+    
+    public void setEnseignant(int code) {
+        this.enseignant = Enseignant.getEnseignant(code);
+    }
 
     public void setEnseignant(Enseignant enseignant) {
         this.enseignant = enseignant;
@@ -115,6 +131,10 @@ public class Cours implements Serializable {
     public Enseignement getEnseignement() {
         return enseignement;
     }
+    
+    public void setEnseignement(int code) {
+        this.enseignement = Enseignement.getEnseignement(code);
+    }
 
     public void setEnseignement(Enseignement enseignement) {
         this.enseignement = enseignement;
@@ -122,6 +142,10 @@ public class Cours implements Serializable {
 
     public Classe getClasse() {
         return classe;
+    }
+    
+    public void setClasse(int code)  {
+        this.classe = Classe.getClasse(code);
     }
 
     public void setClasse(Classe classe) {

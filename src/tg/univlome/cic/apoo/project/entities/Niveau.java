@@ -6,6 +6,7 @@ package tg.univlome.cic.apoo.project.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,13 +14,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import tg.univlome.cic.apoo.project.dao.DaoImpl;
+import tg.univlome.cic.apoo.project.dao.IDao;
 
 /**
  *
  * @author leBoulanger
  */
 @Entity
-@Table(name="niveau")
+@Table(name="niveaux")
 public class Niveau implements Serializable {
     private static List<Niveau> liste = new ArrayList<>();
     @Id
@@ -31,6 +34,21 @@ public class Niveau implements Serializable {
     private int code;
     @Column(name="description")
     private String description;
+    private static IDao manager = new DaoImpl();
+    
+    static {
+        Niveau lvl2 = new Niveau("Cinquième", 5, "Niveau Cinquième");
+        Niveau lvl1 = new Niveau("Sixième", 6, "Niveau Sixième");
+        Niveau lvl3 = new Niveau("Quatrième", 4, "Niveau Quatrième");
+        Niveau lvl4 = new Niveau("Troisième", 3, "Niveau Troisième");
+        
+        liste.add(lvl1);
+        liste.add(lvl2);
+        liste.add(lvl3);
+        liste.add(lvl4);
+        manager.ajouter(Arrays.asList(lvl1, lvl2, lvl3, lvl4));
+        
+    }
 
     public Niveau() {
     }
@@ -39,6 +57,15 @@ public class Niveau implements Serializable {
         this.label = label;
         this.code = code;
         this.description = description;
+    }
+    
+    public static Niveau getNiveau(int code) {
+        for (Niveau niveau : liste) {
+            if(niveau.code == code) {
+                return niveau;
+            }
+        }
+        return null;
     }
 
     public int getId() {
@@ -73,6 +100,14 @@ public class Niveau implements Serializable {
         this.description = description;
     }
 
+    public static List<Niveau> getListe() {
+        return liste;
+    }
+
+    public static void setListe(List<Niveau> liste) {
+        Niveau.liste = liste;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -94,8 +129,5 @@ public class Niveau implements Serializable {
         final Niveau other = (Niveau) obj;
         return this.id == other.id;
     }
-    
-    
-    
-    
+
 }

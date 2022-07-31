@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import tg.univlome.cic.apoo.project.dao.DaoImpl;
+import tg.univlome.cic.apoo.project.dao.IDao;
 
 /**
  *
@@ -23,6 +25,7 @@ import javax.persistence.Table;
 @Table(name="type_evaluation")
 public class TypeEvaluation implements Serializable {
     private static List<TypeEvaluation> liste = new ArrayList<>();
+    private static IDao manager = new DaoImpl();
     @Column(name="type")
     private String type;
     @Id
@@ -30,9 +33,23 @@ public class TypeEvaluation implements Serializable {
     private int id;
     
     static {
-        liste.add(new TypeEvaluation("DST", 0));
-        liste.add(new TypeEvaluation("Examen", 1));
+        TypeEvaluation interro = new TypeEvaluation("INT");
+        TypeEvaluation dst = new TypeEvaluation("DST");
+        TypeEvaluation exam = new TypeEvaluation("Examen");
+        liste.add(dst);
+        liste.add(exam);
+        
+        manager.ajouter(dst);
+        manager.ajouter(exam);
     }
+
+    public TypeEvaluation() {
+    }
+
+    public TypeEvaluation(String type) {
+        this.type = type;
+    }
+    
 
     public TypeEvaluation(String typeShort, int id) {
         this.type = typeShort;

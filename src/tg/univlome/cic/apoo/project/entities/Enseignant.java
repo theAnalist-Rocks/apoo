@@ -6,6 +6,7 @@ package tg.univlome.cic.apoo.project.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import tg.univlome.cic.apoo.project.dao.DaoImpl;
+import tg.univlome.cic.apoo.project.dao.IDao;
 
 /**
  *
@@ -26,6 +29,7 @@ import javax.persistence.Table;
 @Table(name="enseignants")
 public class Enseignant implements Serializable {
     private static List<Enseignant> liste = new ArrayList<>();
+    private static IDao manager = new DaoImpl();
     
     @Column(name="nom")
     private String nom;
@@ -44,9 +48,14 @@ public class Enseignant implements Serializable {
     private List<Cours> cours = new ArrayList<>();
     
     static {
-        liste.add(new Enseignant("Yovo", "Amevi", 0));
-        liste.add(new Enseignant("Ma", "Cooper", 1));
-        liste.add(new Enseignant("LeBoulanger", "Thomas", 2));
+        Enseignant e1 = new Enseignant("Yovo", "Amevi", 27, (float) 21);
+        Enseignant e2 = new Enseignant("Ma", "Cooper", 23, (float)11);
+        Enseignant e3 = new Enseignant("LeBoulanger", "Thomas", 29,(float) 12);
+        liste.addAll(Arrays.asList(e1, e2, e3));
+        
+        manager.ajouter(e1);
+        manager.ajouter(e2);
+        manager.ajouter(e3);
     }
 
     public Enseignant() {
@@ -69,7 +78,18 @@ public class Enseignant implements Serializable {
         this.age = age;
     }
     
+    public Enseignant(String nom, String prenom, int age, int code) {
+        this(nom, prenom, age);
+        this.id = code;
+    }
     
+    public static Enseignant getEnseignant(int code) {
+        for (Enseignant enseignant : liste) {
+            if (enseignant.id == code)
+                return enseignant;
+        }
+        return null;
+    }
 
     public void ajouterNote(Notes n) {
         notes.add(n);

@@ -14,15 +14,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import tg.univlome.cic.apoo.project.dao.DaoImpl;
+import tg.univlome.cic.apoo.project.dao.IDao;
 
 /**
  *
  * @author leBoulanger
  */
 @Entity
-@Table(name="matiere")
+@Table(name="matieres")
 public class Matiere implements Serializable {
     private static List<Matiere> liste = new ArrayList<>();
+    private static IDao manager = new DaoImpl();
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
@@ -30,6 +33,30 @@ public class Matiere implements Serializable {
     private String intitulle;
     @Column(name="code")
     private int code;
+    
+    static {
+        Matiere mat = new Matiere("Maths", 100);
+        Matiere mat1 = new Matiere("Ang", 101);
+        Matiere mat2 = new Matiere("Svt", 102);
+        Matiere mat3 = new Matiere("HG", 103);
+        Matiere mat4 = new Matiere("PC", 104);
+        Matiere mat5 = new Matiere("FR", 105);
+        
+        liste.add(mat);
+        liste.add(mat1);
+        liste.add(mat2);
+        liste.add(mat3);
+        liste.add(mat4);
+        liste.add(mat5);
+        
+        manager.ajouter(mat);
+        manager.ajouter(mat1);
+        manager.ajouter(mat2);
+        manager.ajouter(mat3);
+        manager.ajouter(mat4);
+        manager.ajouter(mat5);
+        
+    }
 
     public Matiere() {
     }
@@ -41,6 +68,14 @@ public class Matiere implements Serializable {
         this.code = code;
     }
 
+    public static Matiere getMatiere(int code) {
+        for (Matiere matiere : liste) {
+            if(matiere.code == code)
+                return matiere;
+        }
+        return null;
+    }
+    
     public String getIntitulle() {
         return intitulle;
     }
@@ -55,6 +90,22 @@ public class Matiere implements Serializable {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public static List<Matiere> getListe() {
+        return liste;
+    }
+
+    public static void setListe(List<Matiere> liste) {
+        Matiere.liste = liste;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
