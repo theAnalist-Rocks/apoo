@@ -23,7 +23,13 @@ public class EvaluationService {
     }
     
     public Evaluation getEvaluation(Long id) {
-        return manager.createQuery("select e from Evaluation e where e.id = :id", Evaluation.class).setParameter("id", id).getResultList().get(0);
+        return manager.createQuery("select e from Evaluation e where e.id = :id", Evaluation.class).setParameter("id", id).getSingleResult();
+    }
+    
+     public Evaluation getEvaluation(int code) {
+        return manager.createQuery("select e from Evaluation e where e.code = :code", Evaluation.class)
+                .setParameter("code", code)
+                .getResultList().get(0);
     }
     
     public List<Evaluation> getEvaluations() {

@@ -23,26 +23,46 @@ import javax.persistence.Table;
  *
  * @author leBoulanger
  */
-@Entity(name = "Notes")
+@Entity
 @Table(name="notes")
 public class Notes implements Serializable {
+    private static List<Notes> listeNotes = new ArrayList<>();
+    @Column(name="code")
+    private static int code = 0;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    @Column(name="id_eleve")
+    private int id_eleve;
     @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))
     private Eleve eleve;
     @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// targetEntity = Evaluation.class)
     private Evaluation evaluations;
+    @Column(name="id_evaluation")
+    private int id_evaluation;
     @Column(name="value")
     private float value;
     @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))// mappedBy = "notes", targetEntity = Enseignant.class)
     private Enseignant enseignants;
-    private static List<Notes> listeNotes = new ArrayList<>();
+    @Column(name="id_enseignant")
+    private int id_enseignant;
 
     public Notes() {
+        this.code ++;
     }
 
+    public Notes(int code_eleve, int code_evaluation, float value, int code_enseignant) {
+        this.id_eleve = code_eleve;
+        setEleve(id_eleve);
+        this.id_evaluation = code_evaluation;
+        setEvaluation(id_evaluation);
+        this.value = value;
+        this.id_enseignant = code_enseignant;
+        setEnseignants(id_enseignant);
+    }
+    
     public Notes(Eleve eleve, Evaluation evaluations, float value, Enseignant enseignants) {
+        this();
         this.eleve = eleve;
         this.evaluations = evaluations;
         this.value = value;
@@ -50,6 +70,7 @@ public class Notes implements Serializable {
     }
 
     public Notes(Eleve eleve, Evaluation evaluations, float value) {
+        this();
         this.eleve = eleve;
         this.evaluations = evaluations;
         this.value = value;
@@ -86,6 +107,10 @@ public class Notes implements Serializable {
     public void setEnseignants(Enseignant enseignants) {
         this.enseignants = enseignants;
     }
+    
+    public void setEnseignants(int code) {
+        this.enseignants = Enseignant.getEnseignant(code);
+    }
 
     public void setValue(int value) {
         this.value = value;
@@ -93,6 +118,10 @@ public class Notes implements Serializable {
 
     public Eleve getEleve() {
         return eleve;
+    }
+    
+    public void setEleve(int code) {
+        this.eleve = Eleve.getEleve(code);
     }
 
     public void setEleve(Eleve eleve) {
@@ -102,6 +131,10 @@ public class Notes implements Serializable {
     public Evaluation getEvaluation() {
         return evaluations;
     }
+    
+    public void setEvaluation(int code) {
+        this.evaluations = Evaluation.getEvaluation(code);
+    }
 
     public void setEvaluation(Evaluation evaluation) {
         this.evaluations = evaluation;
@@ -109,6 +142,10 @@ public class Notes implements Serializable {
 
     public Enseignant getEnseignant() {
         return enseignants;
+    }
+    
+    public void setEnseignant(int code) {
+        this.enseignants = Enseignant.getEnseignant(code);
     }
 
     public void setEnseignant(Enseignant enseignant) {
@@ -121,6 +158,38 @@ public class Notes implements Serializable {
 
     public void setListeNotes(List<Notes> listeNotes) {
         this.listeNotes = listeNotes;
+    }
+
+    public static int getCode() {
+        return code;
+    }
+
+    public static void setCode(int code) {
+        Notes.code = code;
+    }
+
+    public int getId_eleve() {
+        return id_eleve;
+    }
+
+    public void setId_eleve(int id_eleve) {
+        this.id_eleve = id_eleve;
+    }
+
+    public int getId_evaluation() {
+        return id_evaluation;
+    }
+
+    public void setId_evaluation(int id_evaluation) {
+        this.id_evaluation = id_evaluation;
+    }
+
+    public int getId_enseignant() {
+        return id_enseignant;
+    }
+
+    public void setId_enseignant(int id_enseignant) {
+        this.id_enseignant = id_enseignant;
     }
 
     @Override

@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.dao.Manager;
+import tg.univlome.cic.apoo.project.service.EnseignantService;
 
 /**
  *
@@ -30,7 +32,9 @@ import tg.univlome.cic.apoo.project.dao.IDao;
 public class Enseignant implements Serializable {
     private static List<Enseignant> liste = new ArrayList<>();
     private static IDao manager = new DaoImpl();
-    
+    private static int count = 0;
+    @Column(name="code")
+    private int code;
     @Column(name="nom")
     private String nom;
     @Column(name="prenom")
@@ -48,9 +52,9 @@ public class Enseignant implements Serializable {
     private List<Cours> cours = new ArrayList<>();
     
     static {
-        Enseignant e1 = new Enseignant("Yovo", "Amevi", 27, (float) 21);
-        Enseignant e2 = new Enseignant("Ma", "Cooper", 23, (float)11);
-        Enseignant e3 = new Enseignant("LeBoulanger", "Thomas", 29,(float) 12);
+        Enseignant e1 = new Enseignant("Yovo", "Amevi", 27, (float) 21, 0);
+        Enseignant e2 = new Enseignant("Ma", "Cooper", 23, (float)11, 1);
+        Enseignant e3 = new Enseignant("LeBoulanger", "Thomas", 29,(float) 12, 2);
         liste.addAll(Arrays.asList(e1, e2, e3));
         
         manager.ajouter(e1);
@@ -59,36 +63,31 @@ public class Enseignant implements Serializable {
     }
 
     public Enseignant() {
+        Enseignant.count ++;
     }
 
-    public Enseignant(String nom, String prenom, int age, float baseSalarial) {
+    public Enseignant(String nom, String prenom, int age, float baseSalarial, int code) {
+        this();
         this.nom = nom;
         this.prenom = prenom;
         this.age = age;
         this.baseSalarial = baseSalarial;
-    }
-    
-    public Enseignant(int id) {
-        this.id = id;
+        this.code = code;
     }
 
     public Enseignant(String nom, String prenom, int age) {
+        this();
         this.nom = nom;
         this.prenom = prenom;
         this.age = age;
     }
     
-    public Enseignant(String nom, String prenom, int age, int code) {
-        this(nom, prenom, age);
-        this.id = code;
-    }
+//    public Enseignant(String nom, String prenom, int age, int code) {
+//        this(nom, prenom, age);
+//    }
     
     public static Enseignant getEnseignant(int code) {
-        for (Enseignant enseignant : liste) {
-            if (enseignant.id == code)
-                return enseignant;
-        }
-        return null;
+        return new EnseignantService().getEnseignant(code);
     }
 
     public void ajouterNote(Notes n) {

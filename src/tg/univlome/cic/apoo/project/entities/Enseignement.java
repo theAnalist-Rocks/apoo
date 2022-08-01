@@ -20,7 +20,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.dao.Manager;
 import tg.univlome.cic.apoo.project.service.CoursService;
+import tg.univlome.cic.apoo.project.service.EnseignementService;
 
 /**
  *
@@ -71,6 +73,15 @@ public class Enseignement implements Serializable {
         this.id_matiere = id_matiere;
         this.code = code;
     }
+    
+    public Enseignement(int id_niveau, int id_matiere, int code) {
+        this.coefficient = 2;
+        this.setNiveau(id_niveau);
+        this.id_niveau = id_niveau;
+        this.setMatiere(id_matiere);
+        this.id_matiere = id_matiere;
+        this.code = code;
+    }
 
     public Enseignement(float coefficient, Niveau niveau, Matiere matiere) {
         this.coefficient = coefficient;
@@ -79,6 +90,10 @@ public class Enseignement implements Serializable {
     }
 
     public Enseignement() {
+    }
+    
+    public static Enseignement getEnseignement(int code) {
+        return new EnseignementService().getEnseignement(code);
     }
 
     public static List<Enseignement> getListe() {
@@ -89,15 +104,6 @@ public class Enseignement implements Serializable {
         Enseignement.liste = liste;
     }
     
-    public static Enseignement getEnseignement(int code) {
-        for (Enseignement enseignement : liste) {
-            if(enseignement.code == code) {
-                return enseignement;
-            }
-        }
-        return null;
-    }
-
     public int getCode() {
         return code;
     }
@@ -148,6 +154,7 @@ public class Enseignement implements Serializable {
     
     public void setNiveau(int code) {
         this.niveau = Niveau.getNiveau(code);
+        System.out.println(">>> ESM Niveau ID: "+niveau.getId());
     }
 
     public Matiere getMatiere() {
@@ -159,7 +166,8 @@ public class Enseignement implements Serializable {
     }
     
     public void setMatiere(int code) {
-        this.matiere = Matiere.getMatiere(id);
+        this.matiere = Matiere.getMatiere(code);
+        System.out.println(">>> ESM Matiere ID: " + matiere.getId());
     }
     
     

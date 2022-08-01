@@ -16,6 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import tg.univlome.cic.apoo.project.dao.DaoImpl;
+import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.service.EvaluationService;
 
 /**
  *
@@ -25,6 +28,7 @@ import javax.persistence.Table;
 @Table(name="evaluation")
 public class Evaluation implements Serializable {
     private static List<Evaluation> liste = new ArrayList<>();
+    private static IDao manager = new DaoImpl();
     @Column(name="id_cours")
     private int id_cours;
     @ManyToOne(fetch=FetchType.LAZY, cascade=(CascadeType.PERSIST))//, targetEntity = Cours.class)
@@ -39,11 +43,37 @@ public class Evaluation implements Serializable {
     private TypeEvaluation typeEvaluation;
     @Column(name="poids")
     private float poids;
+    @Column(name="code")
+    private int code;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    
+    static {
+        Evaluation e1 = new Evaluation(0, 0, 1, (float) 0.4, 0);
+        liste.add(e1);
+        manager.modifier(e1);
+    }
 
     public Evaluation() {
+    }
+
+    public Evaluation(int id_cours, int id_periode, int id_type_eval, float poids, int code) {
+        this.id_cours = id_cours;
+        this.setCours(id_cours);
+        this.id_periode = id_periode;
+        this.setPeriode(id_periode);
+        this.id_type_eval = id_type_eval;
+        this.setTypeEvaluation(id_type_eval);
+        this.poids = poids;
+        this.code = code;
+    }
+
+    public Evaluation(int id_cours, int id_periode, int id_type_eval, float poids) {
+        this.id_cours = id_cours;
+        this.id_periode = id_periode;
+        this.id_type_eval = id_type_eval;
+        this.poids = poids;
     }
     
     public Evaluation(Long id) {
@@ -60,6 +90,10 @@ public class Evaluation implements Serializable {
         this.periode = periode;
         this.typeEvaluation = typeEvaluation;
         this.poids = poids;
+    }
+    
+    public static Evaluation getEvaluation(int code) {
+        return new EvaluationService().getEvaluation(code);
     }
 
     public int getId_cours() {
@@ -90,12 +124,20 @@ public class Evaluation implements Serializable {
         return cours;
     }
 
+    public void setCours(int code) {
+        this.cours = Cours.getCours(code);
+    }
+    
     public void setCours(Cours cours) {
         this.cours = cours;
     }
 
     public Periode getPeriode() {
         return periode;
+    }
+    
+    public void setPeriode(int code) {
+        this.periode = Periode.getPeriode(code);
     }
 
     public void setPeriode(Periode periode) {
@@ -114,6 +156,10 @@ public class Evaluation implements Serializable {
         return typeEvaluation;
     }
 
+    public void setTypeEvaluation(int code) {
+        this.typeEvaluation = TypeEvaluation.getTypeEval(code);
+    }
+    
     public void setTypeEvaluation(TypeEvaluation typeEvaluation) {
         this.typeEvaluation = typeEvaluation;
     }
@@ -132,6 +178,14 @@ public class Evaluation implements Serializable {
 
     public static void setListe(List<Evaluation> liste) {
         Evaluation.liste = liste;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
     
     

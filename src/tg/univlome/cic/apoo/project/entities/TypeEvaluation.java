@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.service.TypeEvaluationService;
 
 /**
  *
@@ -28,14 +29,16 @@ public class TypeEvaluation implements Serializable {
     private static IDao manager = new DaoImpl();
     @Column(name="type")
     private String type;
+    @Column(name="code")
+    private int code;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     
     static {
-        TypeEvaluation interro = new TypeEvaluation("INT");
-        TypeEvaluation dst = new TypeEvaluation("DST");
-        TypeEvaluation exam = new TypeEvaluation("Examen");
+        TypeEvaluation interro = new TypeEvaluation("INT", 0);
+        TypeEvaluation dst = new TypeEvaluation("DST", 1);
+        TypeEvaluation exam = new TypeEvaluation("Examen", 2);
         liste.add(dst);
         liste.add(exam);
         
@@ -51,9 +54,14 @@ public class TypeEvaluation implements Serializable {
     }
     
 
-    public TypeEvaluation(String typeShort, int id) {
+    public TypeEvaluation(String typeShort, int code) {
         this.type = typeShort;
-        this.id = id;
+        this.code = code;
+
+    }
+    
+    public static TypeEvaluation getTypeEval(int code) {
+        return new TypeEvaluationService().getPeriode(code);
     }
 
     public String getType() {

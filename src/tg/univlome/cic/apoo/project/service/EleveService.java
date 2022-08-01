@@ -27,4 +27,10 @@ public class EleveService {
         List<Eleve> liste = manager.createQuery("select e from Eleve e").getResultList();
         return liste;
     }
+    
+    public Eleve getEleve(int code) {
+        return manager.createQuery("select e from Eleve e where e.matricule = :code", Eleve.class)
+                .setParameter("code", code)
+                .getResultList().get(0);
+    }
 }

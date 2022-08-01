@@ -7,31 +7,30 @@ package tg.univlome.cic.apoo.project.service;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.hibernate.SessionFactory;
-import tg.univlome.cic.apoo.project.dao.DaoImpl;
-import tg.univlome.cic.apoo.project.dao.IDao;
-import tg.univlome.cic.apoo.project.entities.Classe;
+import tg.univlome.cic.apoo.project.entities.Enseignant;
+import tg.univlome.cic.apoo.project.entities.Niveau;
 import tg.univlome.cic.apoo.project.utils.HibernateSessionFactory;
 
 /**
  *
  * @author leBoulanger
  */
-public class ClasseService {
-    private static EntityManager manager;
+public class NiveauService {
+     private static EntityManager manager;
     
-    public ClasseService() {
+    public NiveauService() {
         SessionFactory sessionFactory = HibernateSessionFactory.getSessionFactory();
         this.manager = sessionFactory.createEntityManager();
     }
     
-    public List<Classe> getClasses() {
-        List<Classe> liste = manager.createQuery("select c from Classe c").getResultList();
+    public List<Niveau> getNiveaux() {
+        List<Niveau> liste = manager.createQuery("select e from Niveau e", Niveau.class).getResultList();
         return liste;
     }
     
-    public Classe getClasse(int id) {
-        return manager.createQuery("select c from Classe c where c.code = :id", Classe.class)
-                .setParameter("id", id)
+    public Niveau getNiveau(int code) {
+        return manager.createQuery("select e from Niveau e where e.code = :code", Niveau.class)
+                .setParameter("code", code)
                 .getResultList().get(0);
     }
 }

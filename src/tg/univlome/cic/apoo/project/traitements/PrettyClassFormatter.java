@@ -13,7 +13,7 @@ import tg.univlome.cic.apoo.project.entities.Classe;
  */
 public class PrettyClassFormatter {
     public static String[][] formatList(List<Classe> liste, int columns){
-        String[][] data = new String[32][columns];
+        String[][] data = new String[255][columns];
         int x = 0;
         for (Classe class1 : liste) {
                 data[x][0] = ""+class1.getId()+"";

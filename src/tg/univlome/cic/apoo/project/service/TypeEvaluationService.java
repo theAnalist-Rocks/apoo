@@ -26,7 +26,9 @@ public class TypeEvaluationService {
         return manager.createQuery("select t from TypeEvaluation t", TypeEvaluation.class).getResultList();
     }
     
-    public TypeEvaluation getPeriode(int id) {
-        return manager.createQuery("select t from TypeEvaluation t where t.id = :id", TypeEvaluation.class).getSingleResult();
+    public TypeEvaluation getPeriode(int code) {
+        return manager.createQuery("select t from TypeEvaluation t where t.code = :id", TypeEvaluation.class)
+                .setParameter("id", code)
+                .getResultList().get(0);
     }
 }

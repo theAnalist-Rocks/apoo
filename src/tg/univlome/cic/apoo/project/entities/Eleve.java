@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import tg.univlome.cic.apoo.project.service.EleveService;
 
 /**
  *
@@ -26,6 +27,7 @@ import javax.persistence.Table;
 @Table(name="eleves")
 public class Eleve implements Serializable {
     private static List<Eleve> liste = new ArrayList<>();
+    private static int count = 0;
     @Column(name="nom")
     private String nom;
     @Column(name="prenom")
@@ -53,25 +55,33 @@ public class Eleve implements Serializable {
     }
 
     public Eleve() {
+        Eleve.count ++;
+        this.matricule = count;
     }
     
     public Eleve(int id) {
+        this();
         this.id = id;
     }
 
     public Eleve(String nom, String prenom, int age) {
+        this();
         this.nom = nom;
         this.prenom = prenom;
         this.age = age;
     }
-
-//    public Eleve(String nom, String prenom, int id) {
-//        this.nom = nom;
-//        this.prenom = prenom;
-//        this.id = id;
-//    }
     
+        public Eleve(String nom, String prenom, int age, int mat) {
+        this();
+        this.nom = nom;
+        this.prenom = prenom;
+        this.age = age;
+        this.matricule = mat;
+    }
     
+    public static Eleve getEleve(int code) {
+        return new EleveService().getEleve(code);
+    }
     
     public List<Notes> getNotes(Periode p) {
         List<Notes> liste = new ArrayList<>();
@@ -91,6 +101,10 @@ public class Eleve implements Serializable {
             }
         }
         return liste;
+    }
+    
+    public void addNote(Notes n) {
+        this.notes.add(n);
     }
 
     public String getNom() {

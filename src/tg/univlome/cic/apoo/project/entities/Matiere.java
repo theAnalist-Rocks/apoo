@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.dao.Manager;
+import tg.univlome.cic.apoo.project.service.MatiereService;
 
 /**
  *
@@ -49,12 +51,13 @@ public class Matiere implements Serializable {
         liste.add(mat4);
         liste.add(mat5);
         
-        manager.ajouter(mat);
-        manager.ajouter(mat1);
-        manager.ajouter(mat2);
-        manager.ajouter(mat3);
-        manager.ajouter(mat4);
-        manager.ajouter(mat5);
+        manager.ajouter(liste);
+//        manager.ajouter(mat);
+//        manager.ajouter(mat1);
+//        manager.ajouter(mat2);
+//        manager.ajouter(mat3);
+//        manager.ajouter(mat4);
+//        manager.ajouter(mat5);
         
     }
 
@@ -69,11 +72,7 @@ public class Matiere implements Serializable {
     }
 
     public static Matiere getMatiere(int code) {
-        for (Matiere matiere : liste) {
-            if(matiere.code == code)
-                return matiere;
-        }
-        return null;
+        return new MatiereService().getMatiere(code);
     }
     
     public String getIntitulle() {

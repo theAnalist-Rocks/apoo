@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.service.ClasseService;
 
 /**
  *
@@ -58,7 +59,7 @@ public class Classe implements Serializable {
         Classe c3 = new Classe(4, "4 A", 2);
         Classe c4 = new Classe(3, "3 A", 4);
 //        manager.ajouter(Arrays.asList(c1, c2, c3, c4));
-        manager.ajouter(Arrays.asList(c1, c2, c3, c4));       
+        manager.modifier(Arrays.asList(c1, c2, c3, c4));       
         liste.addAll(Arrays.asList(c1, c2, c3, c4));
     }
     
@@ -80,11 +81,7 @@ public class Classe implements Serializable {
     }
     
     public static Classe getClasse(int code) {
-        for (Classe classe : liste) {
-            if(classe.code == code) 
-                return classe;
-        }
-        return null;
+        return new ClasseService().getClasse(code);
     }
     
     public void ajouterEleve(Eleve e) {
@@ -130,14 +127,6 @@ public class Classe implements Serializable {
     public void setId_niveau(int code_niveau) {
         this.code_niveau = code_niveau;
     }
-
-//    public int getCode_classe() {
-//        return code_classe;
-//    }
-//
-//    public void setCode_classe(int code_classe) {
-//        this.code_classe = code_classe;
-//    }
 
     public String getCode_classe_string() {
         return libelle_court;

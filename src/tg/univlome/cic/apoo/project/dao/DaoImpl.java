@@ -22,6 +22,7 @@ public class DaoImpl<T> implements IDao {
     public DaoImpl() {
         SessionFactory sessionFactory = HibernateSessionFactory.getSessionFactory();
         this.mymanager = sessionFactory.createEntityManager();
+        this.mymanager.isOpen();
     }
 
     @Override

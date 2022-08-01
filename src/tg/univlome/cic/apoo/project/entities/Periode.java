@@ -19,6 +19,8 @@ import tg.univlome.cic.apoo.project.controllers.EleveCtrl;
 import tg.univlome.cic.apoo.project.controllers.EvaluationCtrl;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.dao.Manager;
+import tg.univlome.cic.apoo.project.service.PeriodeService;
 
 /**
  *
@@ -35,14 +37,16 @@ public class Periode implements Serializable {
     private Date debut;
     @Column(name="date_fin")
     private Date fin;
+    @Column(name="code")
+    private int code;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     
     static {
-        Periode p1 = new Periode("Trimestre 1");
-        Periode p2 = new Periode("Trimestre 2");
-        Periode p3 = new Periode("Trimestre 3");
+        Periode p1 = new Periode("Trimestre 1", 0);
+        Periode p2 = new Periode("Trimestre 2", 1);
+        Periode p3 = new Periode("Trimestre 3", 2);
         
         liste.add(p1);
         liste.add(p2);
@@ -66,9 +70,13 @@ public class Periode implements Serializable {
         this.nom_periode = nom_periode;
     }
 
-    public Periode(String nom_periode, int id) {
+    public Periode(String nom_periode, int code) {
         this.nom_periode = nom_periode;
-        this.id = id;
+        this.code = code;
+    }
+    
+    public static Periode getPeriode(int code) {
+        return new PeriodeService().getPeriode(code);
     }
     
     /* notes aux évaluations à la période courante pour un cours donné */
@@ -184,6 +192,32 @@ public class Periode implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    public static List<Periode> getListe() {
+        return liste;
+    }
+
+    public static void setListe(List<Periode> liste) {
+        Periode.liste = liste;
+    }
+
+    public static IDao getManager() {
+        return manager;
+    }
+
+    public static void setManager(IDao manager) {
+        Periode.manager = manager;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+    
+    
 
     @Override
     public int hashCode() {

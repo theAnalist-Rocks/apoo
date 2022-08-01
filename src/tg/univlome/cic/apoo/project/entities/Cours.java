@@ -6,6 +6,7 @@ package tg.univlome.cic.apoo.project.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import tg.univlome.cic.apoo.project.dao.DaoImpl;
 import tg.univlome.cic.apoo.project.dao.IDao;
+import tg.univlome.cic.apoo.project.service.CoursService;
 import tg.univlome.cic.apoo.project.traitements.EntityCliCRUD;
 
 /**
@@ -50,12 +52,23 @@ public class Cours implements Serializable {
     private int id;
     
     static {
-        Cours c = new Cours(10, 0, 4, 0);
-        liste.add(c);
-        manager.ajouter(c);
+        Cours c = new Cours(0, 0, 0, 0);
+        Cours c1 = new Cours(0, 1, 0, 1);
+        Cours c2 = new Cours(0, 2, 0, 2);
+        Cours c3 = new Cours(0, 3, 0, 3);
+        Cours c4 = new Cours(0, 4, 0, 4);
+        Cours c5 = new Cours(0, 5, 0, 5);
+        liste.addAll(Arrays.asList(c, c1, c2, c3, c4, c5));
+        manager.modifier(liste);
     }
 
     public Cours() {
+    }
+
+    public Cours(Enseignement enseignement, Classe classe, int codeCours) {
+        this.enseignement = enseignement;
+        this.classe = classe;
+        this.codeCours = codeCours;
     }
 
     public Cours(int id_enseignant, int id_enseignement, int id_classe, int codeCours) {
@@ -65,6 +78,7 @@ public class Cours implements Serializable {
         this.setEnseignement(id_enseignement);
         this.id_classe = id_classe;
         this.setClasse(id_classe);
+        this.classe.setCours(liste);
         this.codeCours = codeCours;
     }
 
@@ -73,6 +87,10 @@ public class Cours implements Serializable {
         this.enseignement = enseignement;
         this.classe = classe;
         this.id = id;
+    }
+    
+    public static Cours getCours(int code) {
+        return new CoursService().getCours(code);
     }
     
 
@@ -145,8 +163,7 @@ public class Cours implements Serializable {
     }
     
     public void setClasse(int code)  {
-        this.classe = Classe.getClasse(code);
-    }
+        this.classe = Classe.getClasse(code);    }
 
     public void setClasse(Classe classe) {
         this.classe = classe;

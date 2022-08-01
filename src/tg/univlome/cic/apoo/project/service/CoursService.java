@@ -26,7 +26,9 @@ public class CoursService {
         return manager.createQuery("select c from Cours c", Cours.class).getResultList();
     }
     
-    public Cours getCours(int id) {
-        return manager.createQuery("select c from Cours c where c.id = :id", Cours.class).getSingleResult();
+    public Cours getCours(int code) {
+        return manager.createQuery("select c from Cours c where c.codeCours = :id", Cours.class).
+                setParameter("id", code)
+                .getResultList().get(0);
     }
 }

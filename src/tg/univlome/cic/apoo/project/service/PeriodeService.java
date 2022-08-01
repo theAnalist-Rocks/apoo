@@ -26,7 +26,9 @@ public class PeriodeService {
         return manager.createQuery("select p from Periode p", Periode.class).getResultList();
     }
     
-    public Periode getPeriode(int id) {
-        return manager.createQuery("select p from Periode p where p.id = :id", Periode.class).setParameter("id", id).getSingleResult();
+    public Periode getPeriode(int code) {
+        return manager.createQuery("select p from Periode p where p.code = :id", Periode.class)
+                .setParameter("id", code)
+                .getResultList().get(0);
     }
 }

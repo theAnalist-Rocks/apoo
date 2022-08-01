@@ -24,9 +24,6 @@ public class EnseignantCtrl {
         return finder.trouver(e, getListe());
     }
     
-    public Enseignant trouver(int id) {
-        return trouver(new Enseignant(id));
-    }
     
     /* Pour exécuter ces fonctions, on doit avoir un élève qui existe dékà et non un élève volatile*/
 //    public Classe getClasse(Enseignant e) {
